@@ -931,7 +931,6 @@ public class Tethering extends BaseNetworkObserver implements IControlsTethering
         if (tm != null) {
             secureSetting = tm.getTetherApnRequired();
         }
-
         // Allow override of TETHER_DUN_REQUIRED via prop
         int prop = SystemProperties.getInt("persist.sys.dun.override", -1);
         secureSetting = ((prop < 3) && (prop >= 0)) ? prop : secureSetting;
