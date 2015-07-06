@@ -506,7 +506,13 @@ public class SignalClusterView
             mAirplane.setVisibility(View.GONE);
         }
 
-        if (mIsAirplaneMode && mWifiVisible) {
+        if (mImsOverWifi){
+            mImsOverWifiImageView.setVisibility(View.VISIBLE);
+        } else {
+            mImsOverWifiImageView.setVisibility(View.GONE);
+        }
+
+        if (mIsAirplaneMode) {
             mWifiAirplaneSpacer.setVisibility(View.VISIBLE);
         } else {
             mWifiAirplaneSpacer.setVisibility(View.GONE);
