@@ -2293,6 +2293,28 @@ public class PackageManagerService extends IPackageManager.Stub {
                     | PackageParser.PARSE_IS_SYSTEM
                     | PackageParser.PARSE_IS_SYSTEM_DIR, scanFlags, 0);
 
+            // Collect all Regionalization packages form Carrier's res packages.
+            if (RegionalizationEnvironment.isSupported()) {
+                Log.d(TAG, "Load Regionalization vendor apks");
+                final List<File> RegionalizationDirs =
+                        RegionalizationEnvironment.getAllPackageDirectories();
+                for (File f : RegionalizationDirs) {
+                    File RegionalizationSystemDir = new File(f, "system");
+                    // Collect packages in <Package>/system/priv-app
+                    scanDirLI(new File(RegionalizationSystemDir, "priv-app"),
+                            PackageParser.PARSE_IS_SYSTEM | PackageParser.PARSE_IS_SYSTEM_DIR
+                            | PackageParser.PARSE_IS_PRIVILEGED, scanFlags, 0);
+                    // Collect packages in <Package>/system/app
+                    scanDirLI(new File(RegionalizationSystemDir, "app"),
+                            PackageParser.PARSE_IS_SYSTEM | PackageParser.PARSE_IS_SYSTEM_DIR,
+                            scanFlags, 0);
+                    // Collect overlay in <Package>/system/vendor
+                    scanDirLI(new File(RegionalizationSystemDir, "vendor/overlay"),
+                            PackageParser.PARSE_IS_SYSTEM | PackageParser.PARSE_IS_SYSTEM_DIR,
+                            scanFlags, 0);
+                }
+            }
+
             // Prune any system packages that no longer exist.
             final List<String> possiblyDeletedUpdatedSystemApps = new ArrayList<String>();
             if (!mOnlyCore) {
