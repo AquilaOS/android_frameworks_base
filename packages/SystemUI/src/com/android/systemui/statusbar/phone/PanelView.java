@@ -105,6 +105,12 @@ public abstract class PanelView extends FrameLayout {
     };
 
     /**
+     * For PanelView fling perflock call
+     */
+    private BoostFramework mPerf = null;
+    private int mBoostParamVal[];
+
+    /**
      * Whether an instant expand request is currently pending and we are just waiting for layout.
      */
     private boolean mInstantExpanding;
@@ -702,6 +708,9 @@ public abstract class PanelView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                if (mPerf != null) {
+                    mPerf.perfLockRelease();
+                }
                 if (expand) PanelView.this.removeOnLayoutChangeListener(mLayoutChangeListener);
                 if (clearAllExpandHack && !mCancelled) {
                     setExpandedHeightInternal(getMaxPanelHeight());
